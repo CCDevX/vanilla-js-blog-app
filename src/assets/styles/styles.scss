@@ -4,3 +4,32 @@
 @use "reset" as *;
 @use "utils" as *;
 @use "variables" as *;
+
+.container {
+  min-height: 100vh;
+  display: grid;
+  grid:
+    "header" auto
+    "content" 1fr
+    "footer" auto
+    / auto;
+}
+
+header,
+.content,
+footer {
+  padding: 20px;
+}
+
+header {
+  grid-area: header;
+  background: green;
+}
+
+.content {
+  grid-area: content;
+}
+
+footer {
+  grid-area: footer;
+}
