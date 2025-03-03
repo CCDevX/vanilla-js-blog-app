@@ -1,0 +1,26 @@
+{
+  "name": "vanilla-js-blog-app",
+  "version": "1.0.0",
+  "description": "A full-featured blog application built with HTML, CSS, and JavaScript. This project includes a responsive navigation menu, dynamic content management, and CRUD operations (Create, Read, Update, Delete) using a REST API. It also integrates Sass for styling and Vite for optimized bundling per page.",
+  "homepage": "https://github.com/CCDevX/vanilla-js-blog-app#readme",
+  "bugs": {
+    "url": "https://github.com/CCDevX/vanilla-js-blog-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CCDevX/vanilla-js-blog-app.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "sass": "^1.85.1",
+    "vite": "^6.2.0"
+  }
+}
