@@ -1,3 +1,9 @@
+import "../assets/styles/styles.scss";
 import "./form-article-style.scss";
 import "../assets/javascripts/topbar.js";
-console.log("form page");
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+});
