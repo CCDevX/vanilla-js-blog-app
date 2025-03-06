@@ -29,6 +29,28 @@ const addArticles = (articles) => {
   });
   articleContainer.innerHTML = "";
   articleContainer.append(...articlesDOM);
+  const deleteButtons = articleContainer.querySelectorAll(".btn-danger");
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      const target = event.target;
+      console.log("target : ", target);
+      const articleId = target.dataset.id;
+      try {
+        const response = await fetch(
+          `https://restapi.fr/api/cc-blog-posts/${articleId}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const body = await response.json();
+        console.log(body);
+        fetchArticles();
+      } catch (e) {
+        console.log("error : ", e);
+      }
+    });
+  });
 };
 
 const fetchArticles = async () => {
