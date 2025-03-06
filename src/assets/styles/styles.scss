@@ -53,6 +53,7 @@ header {
 }
 
 .content {
+  background: var(--background);
   grid-area: content;
 }
 
