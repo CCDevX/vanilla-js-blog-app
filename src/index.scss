@@ -1,3 +1,5 @@
+@use "./assets/styles/media-queries" as *;
+
 .content {
   display: flex;
   justify-content: center;
@@ -9,6 +11,9 @@
     .article {
       background: white;
       padding: 0 5rem;
+      @include xs {
+        padding: 0 2rem;
+      }
       border-radius: 0.3rem;
       box-shadow: var(--box-shadow);
       margin-bottom: 5rem;
