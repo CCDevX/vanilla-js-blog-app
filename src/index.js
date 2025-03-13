@@ -4,26 +4,36 @@ import "./assets/javascripts/topbar.js";
 
 const articleContainer = document.querySelector(".articles-container");
 const categoriesMenu = document.querySelector(".categories");
+let filter;
+let articles;
 
-const addArticles = (articles) => {
-  const articlesDOM = articles.map((article) => {
-    console.log(article);
-    const articleDOM = document.createElement("div");
-    articleDOM.classList.add("article");
-    articleDOM.innerHTML = `
+const addArticles = () => {
+  const articlesDOM = articles
+    .filter((article) => {
+      if (filter) {
+        return article.category === filter;
+      } else {
+        return true;
+      }
+    })
+    .map((article) => {
+      console.log(article);
+      const articleDOM = document.createElement("div");
+      articleDOM.classList.add("article");
+      articleDOM.innerHTML = `
       <img
               src="${article.img}"
               alt="profile"
             />
             <h2>${article.title}</h2>
             <div class="article-author">${article.author} - ${new Date(
-      article.createdAt
-    ).toLocaleDateString("fr-Fr", {
-      weekday: "long",
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    })}</div>
+        article.createdAt
+      ).toLocaleDateString("fr-Fr", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })}</div>
             <p class="article-content">
               ${article.content}
             </p>
@@ -37,8 +47,8 @@ const addArticles = (articles) => {
             </div>
       `;
 
-    return articleDOM;
-  });
+      return articleDOM;
+    });
   articleContainer.innerHTML = "";
   articleContainer.append(...articlesDOM);
   const deleteButtons = articleContainer.querySelectorAll(".btn-danger");
@@ -62,8 +72,6 @@ const addArticles = (articles) => {
             method: "DELETE",
           }
         );
-        const body = await response.json();
-        console.log(body);
         fetchArticles();
       } catch (e) {
         console.log("error : ", e);
@@ -74,16 +82,28 @@ const addArticles = (articles) => {
 
 const displayMenuCategories = (categoriesArr) => {
   const liElements = categoriesArr.map((categoryElem) => {
-    console.log(categoryElem);
     const li = document.createElement("li");
     li.innerHTML = `${categoryElem[0]} { <strong>${categoryElem[1]}</strong> }`;
+    li.addEventListener("click", (event) => {
+      if (filter === categoryElem[0]) {
+        filter = null;
+        li.classList.remove("active");
+      } else {
+        filter = categoryElem[0];
+        liElements.forEach((li) => {
+          li.classList.remove("active");
+        });
+        li.classList.add("active");
+      }
+      addArticles();
+    });
     return li;
   });
   categoriesMenu.innerHTML = "";
   categoriesMenu.append(...liElements);
 };
 
-const createMenuCategory = (articles) => {
+const createMenuCategory = () => {
   const categories = articles.reduce((acc, article) => {
     if (acc[article.category]) {
       acc[article.category]++;
@@ -93,9 +113,13 @@ const createMenuCategory = (articles) => {
     return acc;
   }, {});
 
-  const categoriesArr = Object.keys(categories).map((category) => {
-    return [category, categories[category]];
-  });
+  const categoriesArr = Object.keys(categories)
+    .map((category) => {
+      return [category, categories[category]];
+    })
+    .sort((c1, c2) => {
+      return c1[0].localeCompare(c2[0]);
+    });
 
   displayMenuCategories(categoriesArr);
 };
@@ -105,9 +129,9 @@ const fetchArticles = async () => {
     const response = await fetch("https://restapi.fr/api/cc-blog-posts", {
       method: "GET",
     });
-    const articles = await response.json();
-    addArticles(articles);
-    createMenuCategory(articles);
+    articles = await response.json();
+    addArticles();
+    createMenuCategory();
   } catch (e) {
     console.log("error : ", e);
   }
