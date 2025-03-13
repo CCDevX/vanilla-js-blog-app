@@ -15,12 +15,21 @@ const addArticles = (articles) => {
               alt="profile"
             />
             <h2>${article.title}</h2>
-            <div class="article-author">${article.author} - ${article.category}</div>
+            <div class="article-author">${article.author} - ${new Date(
+      article.createdAt
+    ).toLocaleDateString("fr", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    })}</div>
             <p class="article-content">
               ${article.content}
             </p>
             <div class="article-actions">
-              <button class="btn btn-danger" data-id="${article._id}">Supprimer</button>
+              <button class="btn btn-danger" data-id="${
+                article._id
+              }">Supprimer</button>
               <button class="btn btn-primary">Modifier</button>
             </div>
       `;

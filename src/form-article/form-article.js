@@ -4,6 +4,7 @@ import "../assets/javascripts/topbar.js";
 
 const form = document.querySelector("form");
 const errorUl = document.querySelector("#errors");
+const cancelBtn = document.querySelector(".btn-secondary");
 let errors = [];
 
 form.addEventListener("submit", async (event) => {
@@ -21,13 +22,18 @@ form.addEventListener("submit", async (event) => {
         },
         body: json,
       });
-      const body = await response.json();
-      console.log(body);
+      if (response.status > 299) {
+        location.assign("/index.html");
+      }
     } catch (e) {
       console.log("error : ", e);
     }
   } else {
   }
+});
+
+cancelBtn.addEventListener("click", (event) => {
+  location.assign("/index.html");
 });
 
 const isFormValid = (article) => {
