@@ -3,6 +3,7 @@ import "./assets/styles/styles.scss";
 import "./assets/javascripts/topbar.js";
 
 const articleContainer = document.querySelector(".articles-container");
+const categoriesMenu = document.querySelector(".categories");
 
 const addArticles = (articles) => {
   const articlesDOM = articles.map((article) => {
@@ -71,6 +72,34 @@ const addArticles = (articles) => {
   });
 };
 
+const displayMenuCategories = (categoriesArr) => {
+  const liElements = categoriesArr.map((categoryElem) => {
+    console.log(categoryElem);
+    const li = document.createElement("li");
+    li.innerHTML = `${categoryElem[0]} { <strong>${categoryElem[1]}</strong> }`;
+    return li;
+  });
+  categoriesMenu.innerHTML = "";
+  categoriesMenu.append(...liElements);
+};
+
+const createMenuCategory = (articles) => {
+  const categories = articles.reduce((acc, article) => {
+    if (acc[article.category]) {
+      acc[article.category]++;
+    } else {
+      acc[article.category] = 1;
+    }
+    return acc;
+  }, {});
+
+  const categoriesArr = Object.keys(categories).map((category) => {
+    return [category, categories[category]];
+  });
+
+  displayMenuCategories(categoriesArr);
+};
+
 const fetchArticles = async () => {
   try {
     const response = await fetch("https://restapi.fr/api/cc-blog-posts", {
@@ -78,6 +107,7 @@ const fetchArticles = async () => {
     });
     const articles = await response.json();
     addArticles(articles);
+    createMenuCategory(articles);
   } catch (e) {
     console.log("error : ", e);
   }
