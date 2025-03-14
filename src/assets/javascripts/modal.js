@@ -11,14 +11,27 @@ export function openModal(message) {
   createModal(message);
   calc.append(modal);
   body.append(calc);
+  return new Promise((resolve, reject) => {
+    calc.addEventListener("click", (event) => {
+      resolve(false);
+      calc.remove();
+    });
+
+    cancel.addEventListener("click", (event) => {
+      resolve(false);
+      calc.remove();
+    });
+
+    confirm.addEventListener("click", (event) => {
+      resolve(true);
+      calc.remove();
+    });
+  });
 }
 
 const createCalc = () => {
   calc = document.createElement("div");
   calc.classList.add("calc");
-  calc.addEventListener("click", (event) => {
-    calc.remove();
-  });
 };
 
 const createModal = (message) => {
@@ -32,5 +45,8 @@ const createModal = (message) => {
 
   cancel.classList.add("btn", "btn-secondary");
   confirm.classList.add("btn", "btn-primary");
+  modal.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
   modal.append(cancel, confirm);
 };

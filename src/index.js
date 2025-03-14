@@ -71,11 +71,11 @@ const addArticles = () => {
   });
   deleteButtons.forEach((button) => {
     button.addEventListener("click", async (event) => {
-      //const choice = await
-      console.log("delete");
-      openModal("Êtes-vous sûr de vouloir supprimer cet article ?");
+      const choice = await openModal(
+        "Êtes-vous sûr de vouloir supprimer cet article ?"
+      );
 
-      /* if (choice) {
+      if (choice) {
         const target = event.target;
         const articleId = target.dataset.id;
         try {
@@ -89,7 +89,7 @@ const addArticles = () => {
         } catch (e) {
           console.log("error : ", e);
         }
-      } */
+      }
     });
   });
 };
