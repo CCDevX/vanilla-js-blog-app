@@ -1,6 +1,7 @@
 import "./index.scss";
 import "./assets/styles/styles.scss";
 import "./assets/javascripts/topbar.js";
+import { openModal } from "./assets/javascripts/modal.js";
 
 const articleContainer = document.querySelector(".articles-container");
 const categoriesMenu = document.querySelector(".categories");
@@ -70,19 +71,25 @@ const addArticles = () => {
   });
   deleteButtons.forEach((button) => {
     button.addEventListener("click", async (event) => {
-      const target = event.target;
-      const articleId = target.dataset.id;
-      try {
-        const response = await fetch(
-          `https://restapi.fr/api/cc-blog-posts/${articleId}`,
-          {
-            method: "DELETE",
-          }
-        );
-        fetchArticles();
-      } catch (e) {
-        console.log("error : ", e);
-      }
+      //const choice = await
+      console.log("delete");
+      openModal("Êtes-vous sûr de vouloir supprimer cet article ?");
+
+      /* if (choice) {
+        const target = event.target;
+        const articleId = target.dataset.id;
+        try {
+          const response = await fetch(
+            `https://restapi.fr/api/cc-blog-posts/${articleId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          fetchArticles();
+        } catch (e) {
+          console.log("error : ", e);
+        }
+      } */
     });
   });
 };
