@@ -4,8 +4,15 @@ import "./assets/javascripts/topbar.js";
 
 const articleContainer = document.querySelector(".articles-container");
 const categoriesMenu = document.querySelector(".categories");
+const select = document.querySelector("select");
 let filter;
 let articles;
+let sortBy = "desc";
+
+select.addEventListener("change", (event) => {
+  sortBy = select.value;
+  fetchArticles();
+});
 
 const addArticles = () => {
   const articlesDOM = articles
@@ -84,6 +91,9 @@ const displayMenuCategories = (categoriesArr) => {
   const liElements = categoriesArr.map((categoryElem) => {
     const li = document.createElement("li");
     li.innerHTML = `${categoryElem[0]} { <strong>${categoryElem[1]}</strong> }`;
+    if (categoryElem[0] === filter) {
+      li.classList.add("active");
+    }
     li.addEventListener("click", (event) => {
       if (filter === categoryElem[0]) {
         filter = null;
@@ -126,9 +136,12 @@ const createMenuCategory = () => {
 
 const fetchArticles = async () => {
   try {
-    const response = await fetch("https://restapi.fr/api/cc-blog-posts", {
-      method: "GET",
-    });
+    const response = await fetch(
+      `https://restapi.fr/api/cc-blog-posts?sort=createdAt:${sortBy}`,
+      {
+        method: "GET",
+      }
+    );
     articles = await response.json();
     addArticles();
     createMenuCategory();
